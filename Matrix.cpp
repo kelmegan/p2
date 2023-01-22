@@ -27,8 +27,16 @@ void Matrix_init(Matrix* mat, int width, int height) {
 void Matrix_print(const Matrix* mat, std::ostream& os) {
   assert(0 < mat->width && mat->width <= MAX_MATRIX_WIDTH);
   assert(0 < mat->height && mat->height <= MAX_MATRIX_HEIGHT);
-  
-
+  os << (mat->width) << " " ;
+  os << (mat->height) << std::endl;
+  for (int r = 0; r < mat->height; r++)
+  {
+      for (int c = 0; c < mat->width; c++)
+      {
+          os << mat->data[(r * mat->width) + c] << " ";
+      }
+      os << std::endl;
+  }
 }
 
 // REQUIRES: mat points to an valid Matrix
