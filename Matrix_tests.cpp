@@ -13,7 +13,11 @@ using namespace std;
 // -----
 // Fills a 3x5 Matrix with a value and checks
 // that Matrix_at returns that value for each element.
-TEST(test_fill_basic) {
+
+
+// ADD YOUR TESTS HERE
+// You are encouraged to use any functions from Matrix_test_helpers.h as needed.
+TEST(test_matrix_fill) {
   Matrix *mat = new Matrix; // create a Matrix in dynamic memory
 
   const int width = 3;
@@ -31,10 +35,64 @@ TEST(test_fill_basic) {
   delete mat; // delete the Matrix
 }
 
-// ADD YOUR TESTS HERE
-// You are encouraged to use any functions from Matrix_test_helpers.h as needed.
+TEST(test_matrix_width) {
+  Matrix *mat = new Matrix;
+  Matrix_init(mat, 200, 150);
 
+  ASSERT_EQUAL(Matrix_width(mat), 200);
+  delete mat;
+}
+TEST(test_matrix_height) {
+  Matrix *mat = new Matrix;
+  Matrix_init(mat, 200, 150);
+  ASSERT_EQUAL(Matrix_height(mat), 150);
+  delete mat;
+}
+TEST(test_matrix_rowcol) {
+  Matrix *mat = new Matrix;
+  Matrix_init(mat, 200, 150);
+  Matrix_fill(mat, 15);
 
+  int *ptr = Matrix_at(mat, 100, 37);
+  ASSERT_EQUAL(Matrix_row(mat, ptr), 100);
+  ASSERT_EQUAL(Matrix_column(mat, ptr), 37);
+  ASSERT_EQUAL(*ptr, 15);
+  delete mat;
+}
+TEST(test_matrix_pointer) {
+  Matrix *mat = new Matrix;
+  Matrix_init(mat, 200, 150);
+  Matrix_fill(mat, 15);
+  int *ptr = Matrix_at(mat, 100, 37);
+  *ptr = 420;
+
+  const int *cptr = Matrix_at(mat, 100, 37);
+  ASSERT_EQUAL(*cptr, 420);
+
+  //Matrix_fill_border(mat, 2);
+  //ASSERT_EQUAL(*Matrix_at(mat, 0, 0), 2);
+
+  //ASSERT_EQUAL(Matrix_max(mat), 42);
+
+  delete mat;
+}
+TEST(test_matrix_border) {
+  Matrix *mat = new Matrix;
+  Matrix_init(mat, 200, 150);
+  Matrix_fill(mat, 15);
+  int *ptr = Matrix_at(mat, 100, 37);
+  *ptr = 420;
+
+  const int *cptr = Matrix_at(mat, 100, 37);
+  ASSERT_EQUAL(*cptr, 420);
+
+  Matrix_fill_border(mat, 2);
+  ASSERT_EQUAL(*Matrix_at(mat, 0, 0), 2);
+
+  ASSERT_EQUAL(Matrix_max(mat), 420);
+
+  delete mat;
+}
 // NOTE: The unit test framework tutorial in Lab 2 originally
 // had a semicolon after TEST_MAIN(). Although including and
 // excluding the semicolon are both correct according to the c++
