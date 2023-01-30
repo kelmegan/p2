@@ -146,7 +146,9 @@ void test_cost(const Matrix *cost_mat, string prefix){
 
   Matrix* cost_mat_correct = new Matrix;
   load_matrix(cost_mat_correct, prefix + "_cost_correct.txt");
-
+  //Matrix_print(cost_mat, cout);
+  //cout << " correct "<< endl;
+  //Matrix_print(cost_mat_correct, cout);
   assert(Matrix_equal(cost_mat, cost_mat_correct));
   cout << "PASS" << endl;
 
@@ -188,6 +190,8 @@ void test_seam_carve(const Image *img, string prefix,
   cout << new_width << "x" << new_height << "..." << flush;
   Image* carved_img = new Image(*img);
   seam_carve(carved_img, new_width, new_height);
+  //seam_carve_width(carved_img, new_width);
+  
   write_image(carved_img,
     prefix + "_" + to_string(new_width) +
     "x" + to_string(new_height) + OUT_PPM_EXT);
@@ -196,6 +200,7 @@ void test_seam_carve(const Image *img, string prefix,
   load_image(carved_img_correct,
     prefix + "_" + to_string(new_width) +
     "x" + to_string(new_height) + ".correct.ppm");
+  
 
   assert(Image_equal(carved_img, carved_img_correct));
   cout << "PASS" << endl;
