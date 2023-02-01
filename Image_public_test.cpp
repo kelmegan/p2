@@ -8,7 +8,6 @@
 
 using std::string;
 
-
 // This is the public Image test for which the autograder gives feedback.
 // It only tests VERY FEW of the expected behaviors of the Image module.
 // It will only really tell you if your code compiles and you remembered to
@@ -16,8 +15,8 @@ using std::string;
 // the whole truth. It might put you in a blender. You get the point.
 // You must write your own comprehensive unit tests in Image_tests.cpp!
 
-
-TEST(test_image_basic) {
+TEST(test_image_basic)
+{
   Pixel red = {255, 0, 0};
   Pixel green = {0, 255, 0};
   Image *img = new Image;
@@ -35,7 +34,8 @@ TEST(test_image_basic) {
   delete img;
 }
 
-TEST(test_image_from_and_to_stream) {
+TEST(test_image_from_and_to_stream)
+{
   Image *img = new Image;
 
   // A very poorly behaved input PPM.

@@ -27,6 +27,7 @@ void Matrix_init(Matrix *mat, int width, int height)
 //           the end of each line.
 void Matrix_print(const Matrix *mat, std::ostream &os)
 {
+  assert(mat!=nullptr);
   assert(0 < mat->width && mat->width <= MAX_MATRIX_WIDTH);
   assert(0 < mat->height && mat->height <= MAX_MATRIX_HEIGHT);
   os << (mat->width) << " ";
@@ -45,6 +46,7 @@ void Matrix_print(const Matrix *mat, std::ostream &os)
 // EFFECTS:  Returns the width of the Matrix.
 int Matrix_width(const Matrix *mat)
 {
+  assert(mat!=nullptr);
   assert(0 < mat->width && mat->width <= MAX_MATRIX_WIDTH);
   assert(0 < mat->height && mat->height <= MAX_MATRIX_HEIGHT);
   return mat->width;
@@ -54,6 +56,7 @@ int Matrix_width(const Matrix *mat)
 // EFFECTS:  Returns the height of the Matrix.
 int Matrix_height(const Matrix *mat)
 {
+  assert(mat!=nullptr);
   assert(0 < mat->width && mat->width <= MAX_MATRIX_WIDTH);
   assert(0 < mat->height && mat->height <= MAX_MATRIX_HEIGHT);
   return mat->height;
@@ -64,6 +67,7 @@ int Matrix_height(const Matrix *mat)
 // EFFECTS:  Returns the row of the element pointed to by ptr.
 int Matrix_row(const Matrix *mat, const int *ptr)
 {
+  assert(mat!=nullptr);
   assert(0 < mat->width && mat->width <= MAX_MATRIX_WIDTH);
   assert(0 < mat->height && mat->height <= MAX_MATRIX_HEIGHT);
   // int index = ptr-&(mat->data[0]);
@@ -77,6 +81,7 @@ int Matrix_row(const Matrix *mat, const int *ptr)
 // EFFECTS:  Returns the column of the element pointed to by ptr.
 int Matrix_column(const Matrix *mat, const int *ptr)
 {
+  assert(mat!=nullptr);
   assert(0 < mat->width && mat->width <= MAX_MATRIX_WIDTH);
   assert(0 < mat->height && mat->height <= MAX_MATRIX_HEIGHT);
   int index = ptr - mat->data;
@@ -94,10 +99,9 @@ int Matrix_column(const Matrix *mat, const int *ptr)
 //           at the given row and column.
 int *Matrix_at(Matrix *mat, int row, int column)
 {
-  assert(0 < mat->width && mat->width <= MAX_MATRIX_WIDTH);
-  assert(0 < mat->height && mat->height <= MAX_MATRIX_HEIGHT);
-  assert(0 <= row && row < Matrix_height(mat));
-  assert(0 <= column && column < Matrix_width(mat));
+  assert(mat!=nullptr);
+  assert(0 <= row && row < mat->height && row < MAX_MATRIX_HEIGHT);
+  assert(0 <= column && column < mat->width && column < MAX_MATRIX_WIDTH);
   return &(mat->data[(row * mat->width) + column]);
 }
 
@@ -109,10 +113,13 @@ int *Matrix_at(Matrix *mat, int row, int column)
 //           the Matrix at the given row and column.
 const int *Matrix_at(const Matrix *mat, int row, int column)
 {
-  assert(0 < mat->width && mat->width <= MAX_MATRIX_WIDTH);
-  assert(0 < mat->height && mat->height <= MAX_MATRIX_HEIGHT);
-  assert(0 <= row && row < Matrix_height(mat));
-  assert(0 <= column && column < Matrix_width(mat));
+  assert(mat!=nullptr);
+  assert(0 <= row && row < mat->height && row < MAX_MATRIX_HEIGHT);
+  assert(0 <= column && column < mat->width && column < MAX_MATRIX_WIDTH);
+  //assert(0 < mat->width && mat->width <= MAX_MATRIX_WIDTH);
+  //assert(0 < mat->height && mat->height <= MAX_MATRIX_HEIGHT);
+  //assert(0 <= row && row < Matrix_height(mat));
+  //assert(0 <= column && column < Matrix_width(mat));
   const int *tempInt = &(mat->data[(row * mat->width) + column]);
   return tempInt;
 }
@@ -122,6 +129,8 @@ const int *Matrix_at(const Matrix *mat, int row, int column)
 // EFFECTS:  Sets each element of the Matrix to the given value.
 void Matrix_fill(Matrix *mat, int value)
 {
+  assert(mat!=nullptr);
+  //assert(0 <=value && value <=255); //used for energy >255
   assert(0 < mat->width && mat->width <= MAX_MATRIX_WIDTH);
   assert(0 < mat->height && mat->height <= MAX_MATRIX_HEIGHT);
   for (int r = 0; r < mat->height; r++)
@@ -140,6 +149,8 @@ void Matrix_fill(Matrix *mat, int value)
 //           row or the first/last column.
 void Matrix_fill_border(Matrix *mat, int value)
 {
+  assert(mat!=nullptr);
+  //assert(0 <=value && value <=255); //used for energy >255
   assert(0 < mat->width && mat->width <= MAX_MATRIX_WIDTH);
   assert(0 < mat->height && mat->height <= MAX_MATRIX_HEIGHT);
   for (int c = 0; c < mat->width; c++)
@@ -158,6 +169,7 @@ void Matrix_fill_border(Matrix *mat, int value)
 // EFFECTS:  Returns the value of the maximum element in the Matrix
 int Matrix_max(const Matrix *mat)
 {
+  assert(mat!=nullptr);
   assert(0 < mat->width && mat->width <= MAX_MATRIX_WIDTH);
   assert(0 < mat->height && mat->height <= MAX_MATRIX_HEIGHT);
   int max = mat->data[0];
@@ -187,10 +199,11 @@ int Matrix_max(const Matrix *mat)
 int Matrix_column_of_min_value_in_row(const Matrix *mat, int row,
                                       int column_start, int column_end)
 {
+  assert(mat!=nullptr);
   assert(0 < mat->width && mat->width <= MAX_MATRIX_WIDTH);
   assert(0 < mat->height && mat->height <= MAX_MATRIX_HEIGHT);
-  assert(0 <= column_start && column_end <= Matrix_width(mat));
-  assert(0 <= row && row < Matrix_height(mat));
+  assert(0 <= column_start && column_end <= mat->width);
+  assert(0 <= row && row < mat->height);
   assert(column_start < column_end);
   int minCol = column_start + 1;
   int min = mat->data[column_start + ((row * Matrix_width(mat)))];
@@ -215,13 +228,13 @@ int Matrix_column_of_min_value_in_row(const Matrix *mat, int row,
 int Matrix_min_value_in_row(const Matrix *mat, int row,
                             int column_start, int column_end)
 {
+  assert(mat!=nullptr);
   assert(0 < mat->width && mat->width <= MAX_MATRIX_WIDTH);
   assert(0 < mat->height && mat->height <= MAX_MATRIX_HEIGHT);
-  assert(0 < mat->width && mat->width <= MAX_MATRIX_WIDTH);
-  assert(0 < mat->height && mat->height <= MAX_MATRIX_HEIGHT);
-  // assert(0 <= column_start && column_end < Matrix_width(mat));
-  // assert(0 <= row && row < Matrix_height(mat));
-  // assert(column_start < column_end);
+  assert(0 <= column_start && column_end <= mat->width);
+  assert(0 <= row && row < mat->height);
+  
+  assert(column_start < column_end);
   int min = mat->data[column_start + ((row * Matrix_width(mat)))];
   for (int c = column_start + 2; (c) <= (column_end + 1); c++)
   {

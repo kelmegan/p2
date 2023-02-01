@@ -35,6 +35,14 @@ TEST(test_matrix_fill) {
   delete mat; // delete the Matrix
 }
 
+TEST(test_matrix_init_1) {
+  Matrix *mat = new Matrix;
+  Matrix_init(mat, 500 , 500);
+  ASSERT_EQUAL(Matrix_height(mat), 500);
+  ASSERT_EQUAL(Matrix_width(mat), 500);
+  delete mat;
+}
+
 TEST(test_matrix_width) {
   Matrix *mat = new Matrix;
   Matrix_init(mat, 200, 150);
@@ -93,6 +101,145 @@ TEST(test_matrix_border) {
 
   delete mat;
 }
+
+TEST(test_matrix_border_large) {
+  Matrix *mat = new Matrix;
+  Matrix_init(mat, 500, 500);
+  Matrix_fill(mat, 255);
+  int *ptr = Matrix_at(mat, 499, 499);
+  *ptr = 3;
+
+  const int *cptr = Matrix_at(mat, 499, 499);
+
+  ASSERT_EQUAL(*cptr, 3);
+  ASSERT_EQUAL(Matrix_column_of_min_value_in_row(mat, 499, 0, 500), 499);
+  ASSERT_EQUAL(Matrix_min_value_in_row(mat, 499, 0, 500), 3);
+  Matrix_fill_border(mat, 60);
+  ASSERT_EQUAL(*Matrix_at(mat, 0, 0), 60);
+
+  ASSERT_EQUAL(*Matrix_at(mat, 0, 499), 60);
+  ASSERT_EQUAL(*Matrix_at(mat, 499, 0), 60);
+  ASSERT_EQUAL(*Matrix_at(mat, 499, 499), 60);
+
+
+  delete mat;
+}
+
+TEST(test_matrix_border_3x3) {
+  Matrix *mat = new Matrix;
+  Matrix_init(mat, 3, 3);
+  Matrix_fill(mat, 0);
+  int *ptr = Matrix_at(mat, 1, 1);
+  *ptr = 30;
+  const int *cptr = Matrix_at(mat, 1, 1);
+  ASSERT_EQUAL(*cptr, 30);
+  Matrix_fill_border(mat, 500);
+  ASSERT_EQUAL(*Matrix_at(mat, 0, 0), 500);
+  ASSERT_EQUAL(*Matrix_at(mat, 0, 0), 500);
+  ASSERT_EQUAL(*Matrix_at(mat, 2, 2), 500);
+  ASSERT_EQUAL(*Matrix_at(mat, 1, 0), 500);
+  ASSERT_EQUAL(*Matrix_at(mat, 2, 0), 500);
+  ASSERT_EQUAL(*Matrix_at(mat, 0, 2), 500);
+  delete mat;
+}
+
+TEST(test_mincolinrow_large) {
+  Matrix *mat = new Matrix;
+  Matrix_init(mat, 500, 500);
+  Matrix_fill(mat, 50);
+  int *ptr = Matrix_at(mat, 25, 25);
+  *ptr = 30;
+  const int *cptr = Matrix_at(mat, 25, 25);
+  ASSERT_EQUAL(Matrix_column_of_min_value_in_row(mat, 25, 0, 50), 25);
+  ASSERT_EQUAL(Matrix_min_value_in_row(mat, 25, 0, 50), 30);
+  ASSERT_EQUAL(*cptr, 30);
+  delete mat;
+}
+TEST(test_mincolinrow_small) {
+  Matrix *mat = new Matrix;
+  Matrix_init(mat, 3, 3);
+  Matrix_fill(mat, 10);
+  int *ptr = Matrix_at(mat, 1, 1);
+  *ptr = 9;
+  const int *cptr = Matrix_at(mat, 1, 1);
+  ASSERT_EQUAL(Matrix_column_of_min_value_in_row(mat, 1, 0, 2), 1);
+  ASSERT_EQUAL(Matrix_min_value_in_row(mat, 1, 0, 2), 9);
+  ASSERT_EQUAL(*cptr, 9);
+  delete mat;
+}
+
+TEST(test_mincolinrow_2x2) {
+  Matrix *mat = new Matrix;
+  Matrix_init(mat, 2, 2);
+  Matrix_fill(mat, 10);
+  int *ptr = Matrix_at(mat, 1, 1);
+  *ptr = 9;
+  const int *cptr = Matrix_at(mat, 1, 1);
+  ASSERT_EQUAL(*cptr, 9);
+  ASSERT_EQUAL(Matrix_column_of_min_value_in_row(mat, 1, 0, 1), 1);
+  ASSERT_EQUAL(Matrix_min_value_in_row(mat, 1, 0, 1), 9);
+  delete mat;
+}
+
+TEST(test_matrix_border_2x2) {
+  Matrix *mat = new Matrix;
+  Matrix_init(mat, 2, 2);
+  Matrix_fill(mat, 1500);
+  int *ptr = Matrix_at(mat, 1, 1);
+  *ptr = 1499;
+  const int *cptr = Matrix_at(mat, 1, 1);
+  ASSERT_EQUAL(*cptr, 1499);
+  Matrix_fill_border(mat, 500);
+  ASSERT_EQUAL(*Matrix_at(mat, 0, 0), 500);
+  ASSERT_EQUAL(*Matrix_at(mat, 0, 1), 500);
+  ASSERT_EQUAL(*Matrix_at(mat, 1, 1), 500);
+  ASSERT_EQUAL(*Matrix_at(mat, 1, 0), 500);
+  delete mat;
+}
+
+TEST(test_matrix_border_1x1) {
+  Matrix *mat = new Matrix;
+  Matrix_init(mat, 1, 1);
+  Matrix_fill(mat, 0);
+  ASSERT_EQUAL(*Matrix_at(mat, 0, 0), 0);
+  int *ptr = Matrix_at(mat, 0, 0);
+  *ptr = 30;
+  const int *cptr = Matrix_at(mat, 0, 0);
+  ASSERT_EQUAL(*cptr, 30);
+  Matrix_fill_border(mat, 500);
+  ASSERT_EQUAL(*Matrix_at(mat, 0, 0), 500);
+  delete mat;
+}
+
+TEST(test_mincolinrow_2x1) {
+  Matrix *mat = new Matrix;
+  Matrix_init(mat, 2, 1);
+  Matrix_fill(mat, 10);
+  int *ptr = Matrix_at(mat, 0, 0);
+  *ptr = 9;
+  const int *cptr = Matrix_at(mat, 0, 0);
+  ASSERT_EQUAL(*cptr, 9);
+  ASSERT_EQUAL(Matrix_column_of_min_value_in_row(mat, 0, 0, 1), 0);
+  ASSERT_EQUAL(Matrix_min_value_in_row(mat, 0, 0, 1), 9);
+  delete mat;
+}
+
+TEST(test_matrix_border_2x1) {
+  Matrix *mat = new Matrix;
+  Matrix_init(mat, 2, 1);
+  Matrix_fill(mat, 7);
+  ASSERT_EQUAL(*Matrix_at(mat, 0, 1), 7);
+  int *ptr = Matrix_at(mat, 0, 0);
+  *ptr = 30;
+  const int *cptr = Matrix_at(mat, 0, 0);
+  ASSERT_EQUAL(*cptr, 30);
+  Matrix_fill_border(mat, 500);
+  ASSERT_EQUAL(*Matrix_at(mat, 0, 0), 500);
+  ASSERT_EQUAL(*Matrix_at(mat, 0, 1), 500);
+  delete mat;
+}
+
+
 // NOTE: The unit test framework tutorial in Lab 2 originally
 // had a semicolon after TEST_MAIN(). Although including and
 // excluding the semicolon are both correct according to the c++
